@@ -1,18 +1,13 @@
 defmodule Fundamentals do
   @db_path "users.bin"
 
-  # list
-  @users [
-    # map
-    %{
-      name: "name1",
-      email: "email1",
-      password: "password1"
-    }
-  ]
+  alias Fundamentals.Entities.User
 
   # Fundamentals.add_user(%{name: "name2", email: "email2", password: "password2"})
-  def add_user(user) do
+  # pattern matching the argument
+  # user = %User{name: "name1", email: "email1", password: "password1"}
+  # Fundamentals.add_user(user)
+  def add_user(%User{} = user) do
     new_Data = [user | get_users()]
     File.write!(@db_path, :erlang.term_to_binary(new_Data))
     new_Data
