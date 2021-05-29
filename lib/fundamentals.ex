@@ -3,6 +3,7 @@ defmodule Fundamentals do
 
   alias Fundamentals.Entities.User
 
+  @spec get_users() :: [User]
   def get_users, do: load()
 
   # Fundamentals.add_user(%{name: "name2", email: "email2", password: "password2"})
@@ -11,6 +12,7 @@ defmodule Fundamentals do
   # Fundamentals.add_user(user)
 
   # id should be nil in user's input
+  @spec add_user(%User{id: nil}) :: [User]
   def add_user(%User{id: nil} = user) do
     last_id = get_last_id()
 
@@ -22,6 +24,14 @@ defmodule Fundamentals do
     updated_users
   end
 
+  @spec get_user(integer) :: User
+  def get_user(id) do
+    users = get_users()
+    user = Enum.find(users, fn user -> user.id === id end)
+    user
+  end
+
+  @spec load() :: list
   defp load do
     if File.exists?(@db_path) do
       :erlang.binary_to_term(File.read!(@db_path))
@@ -32,6 +42,7 @@ defmodule Fundamentals do
     end
   end
 
+  @spec get_last_id() :: integer
   defp get_last_id do
     if get_users() === [] do
       0
